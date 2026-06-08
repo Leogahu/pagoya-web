@@ -1,59 +1,52 @@
-# PagoyaWeb
+# PagoYa Web
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.7.
+![Angular](https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Angular Material](https://img.shields.io/badge/Angular_Material-757575?style=for-the-badge&logo=angular&logoColor=white)
+![Signals](https://img.shields.io/badge/Angular_Signals-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
+![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
 
-## Development server
+Aplicación web de banca digital que permite gestionar cuentas, realizar transferencias y consultar reportes financieros.
 
-To start a local development server, run:
+**Autor:** Henry Antonio Mendoza Puerta
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Funcionalidad
 
-## Code scaffolding
+- **Autenticación:** registro e inicio de sesión de usuarios con tokens.
+- **Cuentas:** crear, listar y depositar en cuentas bancarias.
+- **Transferencias:** enviar dinero entre cuentas y ver el historial.
+- **Dashboard:** resumen visual de la actividad financiera con gráficos.
+- **Reportes:** reportes de cuentas y transferencias.
+- **Perfil:** ver y editar los datos del usuario.
+- **Roles:** rutas protegidas según el tipo de usuario (admin / cliente).
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+---
 
-```bash
-ng generate component component-name
-```
+## Tecnologías utilizadas
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- **Angular 21** (standalone components)
+- **Angular Signals** (manejo de estado reactivo)
+- **Angular Material** + Angular CDK (componentes de UI)
+- **TypeScript**
+- **Netlify** (despliegue del frontend)
+- **Render** (backend / API)
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## Comandos
 
-To build the project run:
+| Acción | Comando |
+|---|---|
+| Instalar dependencias | `npm install` |
+| Servidor de desarrollo | `npm start` (o `ng serve`) → http://localhost:4200 |
+| Compilar para producción | `npm run build` |
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Despliegue
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+El frontend se despliega automáticamente en **Netlify** con cada `git push` a la rama `main`.
+La conexión con el backend (API) se configura en `netlify.toml` mediante un proxy de `/api` hacia el servidor en Render.
