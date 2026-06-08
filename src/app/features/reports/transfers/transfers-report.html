@@ -1,0 +1,119 @@
+<div class="page-head with-action">
+  <div>
+    <h1 class="page-title">Reporte de transferencias</h1>
+    <p class="page-subtitle">Montos por moneda, distribución por estado y actividad diaria.</p>
+  </div>
+  <button mat-stroked-button class="no-print" (click)="exportPdf()">
+    <mat-icon>picture_as_pdf</mat-icon> Descargar PDF
+  </button>
+</div>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+@if (errorMessage()) {
+  <div class="form-mensaje form-mensaje--error">{{ errorMessage() }}</div>
+}
+
+<div class="report-grid">
+  <mat-card appearance="outlined" class="panel">
+    <h2 class="panel-title"><mat-icon>donut_large</mat-icon> Por estado</h2>
+    @if (statusDonut().length) {
+      <app-donut-chart [data]="statusDonut()" caption="Transferencias" />
+    } @else {
+      <p class="panel-empty">Sin transferencias registradas.</p>
+    }
+  </mat-card>
+
+  <mat-card appearance="outlined" class="panel">
+    <div class="panel-head">
+      <h2 class="panel-title"><mat-icon>bar_chart</mat-icon> Monto por moneda</h2>
+      @if (byCurrency().length) {
+        <button mat-stroked-button class="no-print csv-btn" (click)="exportCurrencyCsv()">
+          <mat-icon>download</mat-icon> CSV
+        </button>
+      }
+    </div>
+    <app-bar-chart [data]="currencyBars()" />
+
+    @if (byCurrency().length) {
+      <table mat-table [dataSource]="byCurrency()" class="mini-table">
+        <ng-container matColumnDef="currency">
+          <th mat-header-cell *matHeaderCellDef>Moneda</th>
+          <td mat-cell *matCellDef="let r">{{ r.currency }}</td>
+        </ng-container>
+        <ng-container matColumnDef="totalTransfers">
+          <th mat-header-cell *matHeaderCellDef class="num">Cantidad</th>
+          <td mat-cell *matCellDef="let r" class="num">{{ r.totalTransfers }}</td>
+        </ng-container>
+        <ng-container matColumnDef="totalAmount">
+          <th mat-header-cell *matHeaderCellDef class="num">Total</th>
+          <td mat-cell *matCellDef="let r" class="num">{{ r.totalAmount | soles: r.currency }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="currencyColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: currencyColumns"></tr>
+      </table>
+    }
+  </mat-card>
+</div>
+
+<mat-card appearance="outlined" class="panel day-panel">
+  <div class="day-head">
+    <h2 class="panel-title"><mat-icon>show_chart</mat-icon> Actividad por día</h2>
+    <div class="day-range no-print">
+      <mat-button-toggle-group
+        [value]="dayMetric()"
+        (change)="dayMetric.set($event.value)"
+        hideSingleSelectionIndicator
+        class="metric-toggle"
+      >
+        <mat-button-toggle value="amount">Monto</mat-button-toggle>
+        <mat-button-toggle value="count">Cantidad</mat-button-toggle>
+      </mat-button-toggle-group>
+
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Desde</mat-label>
+        <input matInput type="date" [ngModel]="from()" (ngModelChange)="from.set($event)" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Hasta</mat-label>
+        <input matInput type="date" [ngModel]="to()" (ngModelChange)="to.set($event)" />
+      </mat-form-field>
+      <button mat-flat-button color="primary" (click)="loadByDay()" [disabled]="loadingDay()">
+        <mat-icon>refresh</mat-icon> Aplicar
+      </button>
+      @if (byDay().length) {
+        <button mat-stroked-button (click)="exportDayCsv()">
+          <mat-icon>download</mat-icon> CSV
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (loadingDay()) {
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  }
+
+  @if (dayColumns().length) {
+    <div class="day-chart">
+      @for (d of dayColumns(); track d.day) {
+        <div class="day-col" [title]="d.day + ' · ' + d.transfers + ' transf. · ' + (d.amount | soles)">
+          <div class="day-bar-wrap">
+            <span class="day-amount">
+              @if (dayMetric() === 'amount') {
+                {{ d.amount | soles }}
+              } @else {
+                {{ d.transfers }}
+              }
+            </span>
+            <div class="day-bar" [style.height.%]="d.height"></div>
+          </div>
+          <span class="day-label">{{ d.shortDay }}</span>
+        </div>
+      }
+    </div>
+  } @else if (!loadingDay()) {
+    <p class="panel-empty">No hubo transferencias en el rango seleccionado.</p>
+  }
+</mat-card>

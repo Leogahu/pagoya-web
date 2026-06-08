@@ -1,0 +1,106 @@
+<div class="page-head with-action">
+  <div>
+    <h1 class="page-title">Transferencias</h1>
+    <p class="page-subtitle">Historial de todos tus movimientos.</p>
+  </div>
+  <a mat-flat-button color="primary" routerLink="/app/transfers/new">
+    <mat-icon>send</mat-icon>
+    Nueva transferencia
+  </a>
+</div>
+
+<div class="list-toolbar">
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Cuenta de origen</mat-label>
+    <mat-select [ngModel]="accountFilter()" (ngModelChange)="accountFilter.set($event); resetPage()">
+      <mat-option value="ALL">Todas las cuentas</mat-option>
+      @for (acc of accounts(); track acc.id) {
+        <mat-option [value]="acc.accountNumber">{{ acc.accountNumber }}</mat-option>
+      }
+    </mat-select>
+    <mat-icon matPrefix>account_balance_wallet</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="search" subscriptSizing="dynamic">
+    <mat-label>Buscar</mat-label>
+    <input matInput [ngModel]="search()" (ngModelChange)="search.set($event); resetPage()" placeholder="Destino o cuenta origen" />
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Estado</mat-label>
+    <mat-select [ngModel]="status()" (ngModelChange)="status.set($event); resetPage()">
+      <mat-option value="ALL">Todos</mat-option>
+      <mat-option value="COMPLETED">Completada</mat-option>
+      <mat-option value="PENDING">Pendiente</mat-option>
+      <mat-option value="FAILED">Fallida</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+@if (errorMessage()) {
+  <div class="form-mensaje form-mensaje--error">{{ errorMessage() }}</div>
+}
+
+@if (!loading() && !errorMessage() && filtered().length === 0) {
+  <div class="empty">No hay transferencias para mostrar.</div>
+}
+
+<mat-card appearance="outlined" class="table-card">
+  <table mat-table [dataSource]="paged()" class="transfers-table">
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Fecha</th>
+      <td mat-cell *matCellDef="let t">{{ t.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="source">
+      <th mat-header-cell *matHeaderCellDef>Origen</th>
+      <td mat-cell *matCellDef="let t" class="cell-src">{{ t.sourceAccountNumber }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="destination">
+      <th mat-header-cell *matHeaderCellDef>Destino</th>
+      <td mat-cell *matCellDef="let t" class="cell-dest">
+        <span class="dest-icon" [class]="'type-' + t.type.toLowerCase()">
+          <mat-icon>{{ t.type === 'INTERNAL' ? 'swap_horiz' : 'account_balance' }}</mat-icon>
+        </span>
+        <span class="dest-text">{{ destinationOf(t) }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>Tipo</th>
+      <td mat-cell *matCellDef="let t">
+        <span class="type-badge" [class]="'type-' + t.type.toLowerCase()">{{ typeText(t) }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+      <th mat-header-cell *matHeaderCellDef class="num">Monto</th>
+      <td mat-cell *matCellDef="let t" class="num">{{ t.amount | soles: t.currency }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let t">
+        <span class="status-chip" [class]="statusClass(t)">{{ statusText(t) }}</span>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns"></tr>
+  </table>
+
+  <mat-paginator
+    [length]="filtered().length"
+    [pageSize]="pageSize()"
+    [pageIndex]="pageIndex()"
+    [pageSizeOptions]="[10, 25, 50]"
+    (page)="onPage($event)"
+  />
+</mat-card>

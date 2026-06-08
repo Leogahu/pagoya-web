@@ -1,0 +1,90 @@
+<div class="page-head with-action">
+  <div>
+    <h1 class="page-title">Mis cuentas</h1>
+    <p class="page-subtitle">Administra tus cuentas de ahorro y corriente.</p>
+  </div>
+  <a mat-flat-button color="primary" routerLink="/app/accounts/new">
+    <mat-icon>add</mat-icon>
+    Nueva cuenta
+  </a>
+</div>
+
+<div class="list-toolbar">
+  <mat-form-field appearance="outline" class="search" subscriptSizing="dynamic">
+    <mat-label>Buscar cuenta</mat-label>
+    <input matInput [ngModel]="search()" (ngModelChange)="search.set($event)" placeholder="ACC-..." />
+    <mat-icon matPrefix>search</mat-icon>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" subscriptSizing="dynamic">
+    <mat-label>Estado</mat-label>
+    <mat-select [ngModel]="status()" (ngModelChange)="status.set($event)">
+      <mat-option value="ALL">Todas</mat-option>
+      <mat-option value="ACTIVE">Activa</mat-option>
+      <mat-option value="SUSPENDED">Suspendida</mat-option>
+      <mat-option value="CLOSED">Cerrada</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+@if (errorMessage()) {
+  <div class="form-mensaje form-mensaje--error">{{ errorMessage() }}</div>
+}
+
+@if (!loading() && !errorMessage() && filtered().length === 0) {
+  <div class="empty">No tienes cuentas para mostrar.</div>
+}
+
+<div class="accounts-grid">
+  @for (acc of filtered(); track acc.id) {
+    <mat-card appearance="outlined" class="account-card" [class.is-closed]="acc.status === 'CLOSED'">
+      <div class="account-top">
+        <div class="account-type">
+          <mat-icon>{{ acc.type === 'SAVINGS' ? 'savings' : 'account_balance' }}</mat-icon>
+          <span>{{ typeLabel[acc.type] }}</span>
+        </div>
+        <span class="status-chip" [class]="'status-' + acc.status.toLowerCase()">
+          {{ statusLabel[acc.status] }}
+        </span>
+      </div>
+
+      <div class="account-number">{{ acc.accountNumber }}</div>
+
+      <div class="account-balance">
+        <span class="balance-label">Saldo disponible</span>
+        <span class="balance-value">{{ acc.balance | soles }}</span>
+      </div>
+
+      <div class="account-actions">
+        <button mat-stroked-button [disabled]="acc.status !== 'ACTIVE'" (click)="deposit(acc)">
+          <mat-icon>add_card</mat-icon>
+          Recargar
+        </button>
+        <a mat-stroked-button routerLink="/app/transfers/new" [class.disabled-link]="acc.status !== 'ACTIVE'">
+          <mat-icon>send</mat-icon>
+          Transferir
+        </a>
+        <button
+          mat-icon-button
+          matTooltip="Cerrar cuenta"
+          [disabled]="acc.status !== 'ACTIVE' || acc.balance > 0"
+          (click)="closeAccount(acc)"
+        >
+          <mat-icon>lock</mat-icon>
+        </button>
+      </div>
+    </mat-card>
+  }
+</div>
+
+<mat-paginator
+  [length]="total()"
+  [pageSize]="pageSize()"
+  [pageIndex]="pageIndex()"
+  [pageSizeOptions]="[6, 12, 24]"
+  (page)="onPage($event)"
+/>

@@ -1,0 +1,55 @@
+<div class="centered-page">
+<div class="page-head">
+  <h1 class="page-title">Editar perfil</h1>
+  <p class="page-subtitle">Actualiza tu nombre y teléfono.</p>
+</div>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+<mat-card appearance="outlined" class="form-card">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    @if (errorMessage()) {
+      <div class="form-mensaje form-mensaje--error">{{ errorMessage() }}</div>
+    }
+
+    <mat-form-field appearance="outline" class="field-full">
+      <mat-label>Nombre completo</mat-label>
+      <input matInput formControlName="fullName" autocomplete="name" />
+      <mat-icon matPrefix>person</mat-icon>
+      @if (form.controls.fullName.hasError('required')) {
+        <mat-error>El nombre es obligatorio</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field-full">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="phone" maxlength="9" inputmode="numeric" />
+      <mat-icon matPrefix>call</mat-icon>
+      @if (form.controls.phone.hasError('phone')) {
+        <mat-error>Debe tener 9 dígitos</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field-full">
+      <mat-label>DNI</mat-label>
+      <input matInput [value]="dni()" disabled />
+      <mat-icon matPrefix>badge</mat-icon>
+      <mat-hint>El DNI no se puede modificar.</mat-hint>
+    </mat-form-field>
+
+    <div class="form-card-actions">
+      <a mat-stroked-button routerLink="/app/profile">Cancelar</a>
+      <button mat-flat-button color="primary" type="submit" [disabled]="saving() || loading()">
+        @if (saving()) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Guardar cambios
+        }
+      </button>
+    </div>
+  </form>
+</mat-card>
+</div>

@@ -1,0 +1,77 @@
+<div class="layout">
+  <aside class="sidebar" [class.open]="sidebarOpen">
+    <div class="sidebar-brand">
+      <span class="brand-name">Pago<span class="brand-accent">Ya</span></span>
+    </div>
+
+    <nav class="sidebar-nav">
+
+      <a routerLink="/app/dashboard" routerLinkActive="active" (click)="closeSidebar()">
+        Dashboard
+      </a>
+
+      @if (!isAdmin) {
+        <div class="nav-separator"></div>
+
+        <span class="nav-group-label">Operaciones</span>
+        <a routerLink="/app/accounts" routerLinkActive="active" (click)="closeSidebar()">
+          Cuentas
+        </a>
+        <a routerLink="/app/transfers" routerLinkActive="active" (click)="closeSidebar()">
+          Transferencias
+        </a>
+      }
+
+      @if (isAdmin) {
+        <div class="nav-separator"></div>
+
+        <span class="nav-group-label">Reportes</span>
+        <a routerLink="/app/reports/accounts" routerLinkActive="active" (click)="closeSidebar()">
+          Cuentas
+        </a>
+        <a routerLink="/app/reports/transfers" routerLinkActive="active" (click)="closeSidebar()">
+         Transferencias
+        </a>
+      }
+
+      <div class="nav-separator"></div>
+
+      <span class="nav-group-label">Asistente</span>
+      <a routerLink="/app/assistant" routerLinkActive="active" (click)="closeSidebar()">
+        Asistente IA
+      </a>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+      <div class="nav-separator"></div>
+      @if (!isAdmin) {
+        <a routerLink="/app/profile" routerLinkActive="active" (click)="closeSidebar()">
+          Perfil
+        </a>
+      }
+      <button class="nav-logout" type="button" (click)="logout()">
+        Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topbar">
+      <button class="menu-toggle" type="button" aria-label="Abrir menú" (click)="toggleSidebar()">
+        &#9776;
+      </button>
+      <span class="crumb">{{ crumb() }}</span>
+      <div class="user">
+        <span class="user-name">{{ userName() }}</span>
+        <span class="avatar">{{ userInitials() }}</span>
+      </div>
+    </header>
+
+    <main class="content">
+      <router-outlet />
+    </main>
+
+    <footer class="app-footer">© 2026 PagoYa</footer>
+  </div>
+</div>

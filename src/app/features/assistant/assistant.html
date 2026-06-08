@@ -1,0 +1,33 @@
+<div class="page-head">
+  <h1 class="page-title">Asistente IA</h1>
+  <p class="page-subtitle">Pregúntale lo que quieras sobre tus finanzas en PagoYa.</p>
+</div>
+
+<mat-card appearance="outlined" class="chat">
+  <div class="chat-body">
+    @for (m of messages; track $index) {
+      <div class="msg" [class.msg-user]="m.from === 'user'">
+        @if (m.from === 'bot') {
+          <span class="msg-avatar"><mat-icon>smart_toy</mat-icon></span>
+        }
+        <span class="bubble">{{ m.text }}</span>
+      </div>
+    }
+  </div>
+
+  <div class="suggestions">
+    @for (s of suggestions; track s) {
+      <button mat-stroked-button type="button" (click)="send(s)">{{ s }}</button>
+    }
+  </div>
+
+  <form class="chat-input" (ngSubmit)="send()">
+    <mat-form-field appearance="outline" class="field-full" subscriptSizing="dynamic">
+      <mat-label>Escribe tu mensaje</mat-label>
+      <input matInput [(ngModel)]="draft" name="draft" autocomplete="off" />
+    </mat-form-field>
+    <button mat-fab color="primary" type="submit" aria-label="Enviar">
+      <mat-icon>send</mat-icon>
+    </button>
+  </form>
+</mat-card>

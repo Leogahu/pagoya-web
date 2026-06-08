@@ -1,0 +1,47 @@
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-form-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.auth-form-subtitle {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 22px;
+}
+
+.full {
+  width: 100%;
+}
+
+.auth-submit {
+  height: 46px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.auth-submit mat-spinner {
+  margin: 0 auto;
+}
+
+.auth-submit mat-spinner circle {
+  stroke: #fff;
+}
+
+.auth-form-foot {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.auth-form-foot a {
+  color: var(--color-primary);
+  font-weight: 600;
+}

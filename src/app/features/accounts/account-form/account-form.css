@@ -1,0 +1,41 @@
+.type-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.type-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.type-option:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.type-option mat-icon {
+  color: var(--color-primary);
+}
+
+.type-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.type-name {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.type-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}

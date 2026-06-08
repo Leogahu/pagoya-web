@@ -1,0 +1,49 @@
+<div class="centered-page">
+<div class="page-head">
+  <h1 class="page-title">Mi perfil</h1>
+  <p class="page-subtitle">Tu información personal en Pagoya.</p>
+</div>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+@if (errorMessage()) {
+  <div class="form-mensaje form-mensaje--error">{{ errorMessage() }}</div>
+}
+
+@if (customer(); as customer) {
+<mat-card appearance="outlined" class="profile-card">
+  <div class="profile-header">
+    <span class="profile-avatar">{{ initials() }}</span>
+    <div class="profile-id">
+      <span class="profile-name">{{ customer.fullName }}</span>
+      <span class="profile-role">
+        <mat-icon>verified_user</mat-icon> {{ role }}
+      </span>
+    </div>
+    <a mat-stroked-button routerLink="/app/profile/edit" class="edit-btn">
+      <mat-icon>edit</mat-icon>
+      Editar
+    </a>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <dl class="profile-fields">
+    <div class="field">
+      <dt><mat-icon>mail</mat-icon> Correo</dt>
+      <dd>{{ email }}</dd>
+    </div>
+    <div class="field">
+      <dt><mat-icon>badge</mat-icon> DNI</dt>
+      <dd>{{ customer.dni }}</dd>
+    </div>
+    <div class="field">
+      <dt><mat-icon>call</mat-icon> Teléfono</dt>
+      <dd>{{ customer.phone ?? 'No registrado' }}</dd>
+    </div>
+  </dl>
+</mat-card>
+}
+</div>

@@ -1,0 +1,169 @@
+<div class="page-head">
+  <h1 class="page-title">Hola{{ userName() ? ' ' + userName() : '' }}</h1>
+  <p class="page-subtitle">
+    @if (isAdmin) { Panel de administración de PagoYa } @else { Resumen de tu actividad }
+  </p>
+</div>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+@if (errorMessage()) {
+  <div class="form-mensaje form-mensaje--error">{{ errorMessage() }}</div>
+}
+
+@if (isAdmin) {
+  <!-- ───────── Vista de administrador ───────── -->
+  <div class="stats">
+    <mat-card appearance="outlined" class="stat">
+      <div class="stat-icon"><mat-icon>account_balance</mat-icon></div>
+      <div class="stat-body">
+        <span class="stat-label">Cuentas totales</span>
+        <span class="stat-value">{{ totalAccounts() }}</span>
+        <span class="stat-hint">En toda la plataforma</span>
+      </div>
+    </mat-card>
+    <mat-card appearance="outlined" class="stat">
+      <div class="stat-icon"><mat-icon>savings</mat-icon></div>
+      <div class="stat-body">
+        <span class="stat-label">Saldo acumulado</span>
+        <span class="stat-value">{{ globalBalance() | soles }}</span>
+        <span class="stat-hint">Suma de todas las cuentas</span>
+      </div>
+    </mat-card>
+    <mat-card appearance="outlined" class="stat">
+      <div class="stat-icon"><mat-icon>swap_horiz</mat-icon></div>
+      <div class="stat-body">
+        <span class="stat-label">Transferencias</span>
+        <span class="stat-value">{{ totalTransfers() }}</span>
+        <span class="stat-hint">Registradas en total</span>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="dash-grid">
+    <mat-card appearance="outlined" class="chart-card">
+      <h2 class="card-title"><mat-icon>donut_large</mat-icon> Transferencias por estado</h2>
+      @if (statusDonut().length) {
+        <app-donut-chart [data]="statusDonut()" caption="Transf." />
+      } @else {
+        <p class="card-empty">Aún no hay transferencias registradas.</p>
+      }
+    </mat-card>
+
+    <div class="quick-actions">
+      <a routerLink="/app/reports/accounts" class="quick">
+        <mat-icon>account_balance</mat-icon>
+        <span class="quick-title">Reporte de cuentas</span>
+        <span class="quick-desc">Resumen por tipo y estado.</span>
+      </a>
+      <a routerLink="/app/reports/transfers" class="quick">
+        <mat-icon>bar_chart</mat-icon>
+        <span class="quick-title">Reporte de transferencias</span>
+        <span class="quick-desc">Montos, estados y actividad diaria.</span>
+      </a>
+      <a routerLink="/app/assistant" class="quick">
+        <mat-icon>smart_toy</mat-icon>
+        <span class="quick-title">Asistente IA</span>
+        <span class="quick-desc">Consulta información del sistema.</span>
+      </a>
+    </div>
+  </div>
+} @else {
+  <!-- ───────── Vista de cliente ───────── -->
+  <div class="stats">
+    <mat-card appearance="outlined" class="stat">
+      <div class="stat-icon"><mat-icon>account_balance_wallet</mat-icon></div>
+      <div class="stat-body">
+        <span class="stat-label">Saldo total</span>
+        <span class="stat-value">{{ totalBalance() | soles }}</span>
+        <span class="stat-hint">En todas tus cuentas</span>
+      </div>
+    </mat-card>
+    <mat-card appearance="outlined" class="stat">
+      <div class="stat-icon"><mat-icon>account_balance</mat-icon></div>
+      <div class="stat-body">
+        <span class="stat-label">Cuentas activas</span>
+        <span class="stat-value">{{ activeCount() }}</span>
+        <span class="stat-hint">de {{ accounts().length }} en total</span>
+      </div>
+    </mat-card>
+    <mat-card appearance="outlined" class="stat">
+      <div class="stat-icon"><mat-icon>swap_horiz</mat-icon></div>
+      <div class="stat-body">
+        <span class="stat-label">Movimientos recientes</span>
+        <span class="stat-value">{{ movements().length }}</span>
+        <span class="stat-hint">Últimas transferencias</span>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="dash-grid">
+    <mat-card appearance="outlined" class="chart-card">
+      <h2 class="card-title"><mat-icon>donut_large</mat-icon> Distribución de saldo</h2>
+      @if (balanceDonut().length) {
+        <app-donut-chart [data]="balanceDonut()" caption="Saldo" />
+      } @else {
+        <p class="card-empty">Aún no tienes saldo en tus cuentas.</p>
+      }
+    </mat-card>
+
+    <div class="quick-actions">
+      <a routerLink="/app/transfers/new" class="quick">
+        <mat-icon>send</mat-icon>
+        <span class="quick-title">Nueva transferencia</span>
+        <span class="quick-desc">Envía dinero a otra cuenta.</span>
+      </a>
+      <a routerLink="/app/accounts/new" class="quick">
+        <mat-icon>add_card</mat-icon>
+        <span class="quick-title">Agregar cuenta</span>
+        <span class="quick-desc">Registra una nueva cuenta.</span>
+      </a>
+      <a routerLink="/app/accounts" class="quick">
+        <mat-icon>account_balance</mat-icon>
+        <span class="quick-title">Mis cuentas</span>
+        <span class="quick-desc">Revisa saldos y movimientos.</span>
+      </a>
+      <a routerLink="/app/profile" class="quick">
+        <mat-icon>person</mat-icon>
+        <span class="quick-title">Mi perfil</span>
+        <span class="quick-desc">Actualiza tus datos.</span>
+      </a>
+    </div>
+  </div>
+
+  <mat-card appearance="outlined" class="recent">
+    <div class="recent-head">
+      <h2>Últimas transferencias</h2>
+      <a mat-button routerLink="/app/transfers">Ver todas</a>
+    </div>
+
+    @if (!loading() && movements().length === 0) {
+      <p class="card-empty">No hay transferencias recientes.</p>
+    }
+
+    <div class="recent-table-wrap">
+    <table mat-table [dataSource]="movements()">
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let m">{{ m.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="destination">
+        <th mat-header-cell *matHeaderCellDef>Destino</th>
+        <td mat-cell *matCellDef="let m">{{ destinationOf(m) }}</td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+        <td mat-cell *matCellDef="let m">{{ typeText(m) }}</td>
+      </ng-container>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef class="num">Monto</th>
+        <td mat-cell *matCellDef="let m" class="num">{{ m.amount | soles: m.currency }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns"></tr>
+    </table>
+    </div>
+  </mat-card>
+}

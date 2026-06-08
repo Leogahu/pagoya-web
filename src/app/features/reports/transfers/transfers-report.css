@@ -1,0 +1,139 @@
+.report-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+.panel {
+  padding: 20px;
+  border-radius: var(--radius);
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.panel-title mat-icon {
+  color: var(--color-primary);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.panel-head .panel-title {
+  margin-bottom: 0;
+}
+
+.metric-toggle {
+  height: 38px;
+}
+
+.panel-empty {
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 28px 0;
+}
+
+.mini-table {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.num {
+  text-align: right;
+}
+
+mat-progress-bar {
+  margin-bottom: 16px;
+  border-radius: 999px;
+}
+
+/* ─── Panel de actividad por día ─── */
+.day-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.day-range {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.day-range mat-form-field {
+  width: 150px;
+}
+
+.day-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 220px;
+  padding: 24px 4px 0;
+  overflow-x: auto;
+}
+
+.day-col {
+  flex: 1;
+  min-width: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.day-bar-wrap {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.day-bar {
+  width: 60%;
+  max-width: 34px;
+  min-height: 2px;
+  background: linear-gradient(180deg, var(--color-primary), var(--color-primary-dark));
+  border-radius: 6px 6px 0 0;
+  transition: height 0.4s ease;
+}
+
+.day-amount {
+  font-size: 0.62rem;
+  color: var(--color-text-muted);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.day-label {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  margin-top: 6px;
+  white-space: nowrap;
+}
+
+@media (max-width: 860px) {
+  .report-grid {
+    grid-template-columns: 1fr;
+  }
+}

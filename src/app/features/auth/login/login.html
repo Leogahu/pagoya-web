@@ -1,0 +1,54 @@
+<form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+  <h2 class="auth-form-title">Iniciar sesión</h2>
+  <p class="auth-form-subtitle">Ingresa con tu correo y contraseña.</p>
+
+  @if (errorMessage()) {
+    <div class="form-mensaje form-mensaje--error">{{ errorMessage() }}</div>
+  }
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Correo</mat-label>
+    <input matInput type="email" formControlName="email" placeholder="tu@correo.com" autocomplete="email" />
+    <mat-icon matPrefix>mail</mat-icon>
+    @if (form.controls.email.hasError('required')) {
+      <mat-error>El correo es obligatorio</mat-error>
+    } @else if (form.controls.email.hasError('email')) {
+      <mat-error>Correo inválido</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Contraseña</mat-label>
+    <input
+      matInput
+      [type]="hidePassword() ? 'password' : 'text'"
+      formControlName="password"
+      autocomplete="current-password"
+    />
+    <mat-icon matPrefix>lock</mat-icon>
+    <button
+      mat-icon-button
+      matSuffix
+      type="button"
+      (click)="togglePassword($event)"
+      [attr.aria-label]="hidePassword() ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+    >
+      <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+    @if (form.controls.password.hasError('required')) {
+      <mat-error>La contraseña es obligatoria</mat-error>
+    }
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" type="submit" class="auth-submit" [disabled]="loading()">
+    @if (loading()) {
+      <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+      Entrar
+    }
+  </button>
+
+  <p class="auth-form-foot">
+    ¿No tenés cuenta? <a routerLink="/auth/register">Crear cuenta</a>
+  </p>
+</form>

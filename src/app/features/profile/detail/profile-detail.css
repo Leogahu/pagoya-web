@@ -1,0 +1,103 @@
+.profile-card {
+  padding: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.profile-id {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-right: auto;
+}
+
+.profile-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.profile-role {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-primary);
+}
+
+.profile-role mat-icon {
+  font-size: 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+.profile-fields {
+  margin: 0;
+  padding: 8px 24px 24px;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.field:last-child {
+  border-bottom: none;
+}
+
+.field dt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.field dt mat-icon {
+  font-size: 1.1rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  color: var(--color-text-muted);
+}
+
+.field dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+@media (max-width: 560px) {
+  .profile-header {
+    flex-wrap: wrap;
+  }
+
+  .edit-btn {
+    width: 100%;
+  }
+}

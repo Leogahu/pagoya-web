@@ -1,0 +1,130 @@
+<div class="centered-page">
+<div class="page-head">
+  <h1 class="page-title">Nueva transferencia</h1>
+  <p class="page-subtitle">Envía dinero a otra cuenta de Pagoya o a un banco externo.</p>
+</div>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+<mat-card appearance="outlined" class="form-card transfer-form-card">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    @if (errorMessage()) {
+      <div class="form-mensaje form-mensaje--error">{{ errorMessage() }}</div>
+    }
+
+    <span class="field-group-label">Tipo de transferencia</span>
+    <mat-button-toggle-group
+      [value]="type()"
+      (change)="setType($event.value)"
+      class="type-toggle"
+      hideSingleSelectionIndicator
+    >
+      <mat-button-toggle value="INTERNAL">
+        <mat-icon>swap_horiz</mat-icon> Interna
+      </mat-button-toggle>
+      <mat-button-toggle value="EXTERNAL">
+        <mat-icon>account_balance</mat-icon> Externa
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-form-field appearance="outline" class="field-full">
+      <mat-label>Cuenta de origen</mat-label>
+      <mat-select formControlName="sourceAccountNumber">
+        @for (acc of sourceAccounts(); track acc.id) {
+          <mat-option [value]="acc.accountNumber" [disabled]="acc.status !== 'ACTIVE'">
+            <span class="opt-account">
+              <span class="opt-number">{{ acc.accountNumber }}</span>
+              <span class="opt-meta">
+                {{ typeLabel[acc.type] }} ·
+                @if (acc.status === 'ACTIVE') {
+                  {{ acc.balance | soles }}
+                } @else {
+                  {{ statusLabel[acc.status] }}
+                }
+              </span>
+            </span>
+          </mat-option>
+        } @empty {
+          <mat-option [disabled]="true">No tienes cuentas</mat-option>
+        }
+      </mat-select>
+      <mat-icon matPrefix>account_balance_wallet</mat-icon>
+      @if (form.controls.sourceAccountNumber.hasError('required')) {
+        <mat-error>Elige una cuenta de origen</mat-error>
+      }
+    </mat-form-field>
+
+    @if (type() === 'INTERNAL') {
+      <mat-form-field appearance="outline" class="field-full">
+        <mat-label>Cuenta destino</mat-label>
+        <input matInput formControlName="targetAccountNumber" placeholder="ACC-XXXX-000" />
+        <mat-icon matPrefix>person</mat-icon>
+        @if (form.controls.targetAccountNumber.hasError('required')) {
+          <mat-error>La cuenta destino es obligatoria</mat-error>
+        }
+      </mat-form-field>
+    } @else {
+      <mat-form-field appearance="outline" class="field-full">
+        <mat-label>Beneficiario</mat-label>
+        <input matInput formControlName="externalBeneficiaryName" placeholder="Nombre del titular" />
+        <mat-icon matPrefix>person</mat-icon>
+        @if (form.controls.externalBeneficiaryName.hasError('required')) {
+          <mat-error>El beneficiario es obligatorio</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="field-row">
+        <mat-form-field appearance="outline">
+          <mat-label>Banco</mat-label>
+          <input matInput formControlName="externalBankName" placeholder="BCP, Interbank…" />
+          @if (form.controls.externalBankName.hasError('required')) {
+            <mat-error>Indica el banco</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>N° de cuenta</mat-label>
+          <input matInput formControlName="externalAccountNumber" placeholder="0000-0000-0000" />
+          @if (form.controls.externalAccountNumber.hasError('required')) {
+            <mat-error>Indica el N° de cuenta</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    }
+
+    <div class="field-row">
+      <mat-form-field appearance="outline" class="amount-field">
+        <mat-label>Monto</mat-label>
+        <input matInput type="number" formControlName="amount" placeholder="0.00" min="1" />
+        <span matTextPrefix>S/&nbsp;</span>
+        @if (form.controls.amount.hasError('required')) {
+          <mat-error>El monto es obligatorio</mat-error>
+        } @else if (form.controls.amount.hasError('minAmount')) {
+          <mat-error>El monto mínimo es S/ 1.00</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="currency-field">
+        <mat-label>Moneda</mat-label>
+        <mat-select formControlName="currency">
+          @for (c of currencies; track c) {
+            <mat-option [value]="c">{{ c }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="form-card-actions">
+      <a mat-stroked-button routerLink="/app/transfers">Cancelar</a>
+      <button mat-flat-button color="primary" type="submit" [disabled]="submitting()">
+        @if (submitting()) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Enviar
+        }
+      </button>
+    </div>
+  </form>
+</mat-card>
+</div>

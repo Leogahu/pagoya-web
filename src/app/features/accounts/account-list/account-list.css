@@ -1,0 +1,131 @@
+.page-head.with-action {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.accounts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 18px;
+}
+
+.account-card {
+  padding: 20px;
+  border-radius: var(--radius);
+  min-width: 0;
+}
+
+.account-card.is-closed {
+  opacity: 0.65;
+}
+
+.account-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.account-type {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--color-text-2);
+}
+
+.account-type mat-icon {
+  color: var(--color-primary);
+}
+
+.status-chip {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.status-active {
+  background: #e7f4ea;
+  color: #1e7e34;
+}
+
+.status-suspended {
+  background: #fff3e0;
+  color: #b26a00;
+}
+
+.status-closed {
+  background: var(--color-surface-alt);
+  color: var(--color-text-muted);
+}
+
+.account-number {
+  font-family: 'Roboto Mono', monospace;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  margin-bottom: 16px;
+}
+
+.account-balance {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 20px;
+}
+
+.balance-label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.balance-value {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.account-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.account-actions button:first-child {
+  margin-left: 0;
+}
+
+.account-actions .mat-mdc-icon-button {
+  margin-left: auto;
+}
+
+mat-paginator {
+  margin-top: 16px;
+  border-radius: var(--radius);
+}
+
+mat-progress-bar {
+  margin-bottom: 16px;
+  border-radius: 999px;
+}
+
+.empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+}
+
+.disabled-link {
+  pointer-events: none;
+  opacity: 0.5;
+}

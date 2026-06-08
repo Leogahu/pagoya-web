@@ -1,0 +1,85 @@
+<form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+  <h2 class="auth-form-title">Crear cuenta</h2>
+  <p class="auth-form-subtitle">Completa tus datos para empezar.</p>
+
+  @if (errorMessage()) {
+    <div class="form-mensaje form-mensaje--error">{{ errorMessage() }}</div>
+  }
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Nombre completo</mat-label>
+    <input matInput type="text" formControlName="fullName" placeholder="Nombre y apellido" autocomplete="name" />
+    <mat-icon matPrefix>person</mat-icon>
+    @if (form.controls.fullName.hasError('required')) {
+      <mat-error>El nombre es obligatorio</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Correo</mat-label>
+    <input matInput type="email" formControlName="email" placeholder="tu@correo.com" autocomplete="email" />
+    <mat-icon matPrefix>mail</mat-icon>
+    @if (form.controls.email.hasError('required')) {
+      <mat-error>El correo es obligatorio</mat-error>
+    } @else if (form.controls.email.hasError('email')) {
+      <mat-error>Correo inválido</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>DNI</mat-label>
+    <input matInput type="text" formControlName="dni" placeholder="12345678" maxlength="8" inputmode="numeric" />
+    <mat-icon matPrefix>badge</mat-icon>
+    @if (form.controls.dni.hasError('required')) {
+      <mat-error>El DNI es obligatorio</mat-error>
+    } @else if (form.controls.dni.hasError('dni')) {
+      <mat-error>Debe tener 8 dígitos</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Teléfono (opcional)</mat-label>
+    <input matInput type="tel" formControlName="phone" placeholder="987654321" maxlength="9" inputmode="numeric" />
+    <mat-icon matPrefix>call</mat-icon>
+    @if (form.controls.phone.hasError('phone')) {
+      <mat-error>Debe tener 9 dígitos</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full">
+    <mat-label>Contraseña</mat-label>
+    <input
+      matInput
+      [type]="hidePassword() ? 'password' : 'text'"
+      formControlName="password"
+      autocomplete="new-password"
+    />
+    <mat-icon matPrefix>lock</mat-icon>
+    <button
+      mat-icon-button
+      matSuffix
+      type="button"
+      (click)="togglePassword($event)"
+      [attr.aria-label]="hidePassword() ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+    >
+      <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+    @if (form.controls.password.hasError('required')) {
+      <mat-error>La contraseña es obligatoria</mat-error>
+    } @else if (form.controls.password.hasError('minlength')) {
+      <mat-error>Mínimo 8 caracteres</mat-error>
+    }
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" type="submit" class="auth-submit" [disabled]="loading()">
+    @if (loading()) {
+      <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+      Registrarme
+    }
+  </button>
+
+  <p class="auth-form-foot">
+    ¿Ya tenés cuenta? <a routerLink="/auth/login">Iniciar sesión</a>
+  </p>
+</form>

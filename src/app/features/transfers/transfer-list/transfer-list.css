@@ -1,0 +1,139 @@
+.page-head.with-action {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+mat-progress-bar {
+  margin-bottom: 16px;
+  border-radius: 999px;
+}
+
+.empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+}
+
+.table-card {
+  padding: 4px 4px 0;
+  border-radius: var(--radius);
+  overflow-x: auto;
+}
+
+.transfers-table {
+  width: 100%;
+  background: transparent;
+}
+
+.transfers-table th.mat-mdc-header-cell {
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.transfers-table tr.mat-mdc-row:hover {
+  background: var(--color-surface);
+}
+
+.cell-src {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+/* Destino: icono + texto */
+.cell-dest {
+  font-weight: 500;
+}
+
+.cell-dest {
+  white-space: nowrap;
+}
+
+.dest-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.dest-icon mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+
+.dest-text {
+  vertical-align: middle;
+}
+
+/* Badge de tipo */
+.type-badge {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.type-internal {
+  background: #eaf2fb;
+  color: #1a5fb4;
+}
+
+.type-external {
+  background: #f3eefb;
+  color: #6c3fc4;
+}
+
+.num {
+  text-align: right;
+}
+
+td.num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.status-chip {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.status-completed {
+  background: #e7f4ea;
+  color: #1e7e34;
+}
+
+.status-pending {
+  background: #fff3e0;
+  color: #b26a00;
+}
+
+.status-failed {
+  background: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+mat-paginator {
+  border-radius: var(--radius);
+  background: transparent;
+}

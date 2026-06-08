@@ -1,0 +1,45 @@
+<div class="centered-page">
+<div class="page-head">
+  <h1 class="page-title">Nueva cuenta</h1>
+  <p class="page-subtitle">Elige el tipo de cuenta que querés abrir.</p>
+</div>
+
+<mat-card appearance="outlined" class="form-card">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    @if (errorMessage()) {
+      <div class="form-mensaje form-mensaje--error">{{ errorMessage() }}</div>
+    }
+
+    <mat-radio-group formControlName="type" class="type-options">
+      <label class="type-option">
+        <mat-radio-button value="SAVINGS"></mat-radio-button>
+        <mat-icon>savings</mat-icon>
+        <span class="type-info">
+          <span class="type-name">Cuenta de ahorros</span>
+          <span class="type-desc">Ideal para guardar tu dinero y generar rendimiento.</span>
+        </span>
+      </label>
+
+      <label class="type-option">
+        <mat-radio-button value="CHECKING"></mat-radio-button>
+        <mat-icon>account_balance</mat-icon>
+        <span class="type-info">
+          <span class="type-name">Cuenta corriente</span>
+          <span class="type-desc">Pensada para movimientos y pagos frecuentes.</span>
+        </span>
+      </label>
+    </mat-radio-group>
+
+    <div class="form-card-actions">
+      <a mat-stroked-button routerLink="/app/accounts">Cancelar</a>
+      <button mat-flat-button color="primary" type="submit" [disabled]="loading()">
+        @if (loading()) {
+          <mat-spinner diameter="20"></mat-spinner>
+        } @else {
+          Abrir cuenta
+        }
+      </button>
+    </div>
+  </form>
+</mat-card>
+</div>

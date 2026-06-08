@@ -1,0 +1,97 @@
+/* ── Contenedor raíz ── */
+.auth-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+/* ══════════════════════════
+   BODY — dos columnas
+══════════════════════════ */
+.auth-body {
+  flex: 1;
+  display: flex;
+}
+
+/* Panel izquierdo — branding oscuro (estilo PagoYa) */
+.auth-panel-left {
+  flex: 1;
+  background: var(--sidebar-bg);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px;
+}
+
+.auth-panel-left-content {
+  max-width: 420px;
+}
+
+/* Logo "Pago" blanco + "Ya" rojo, igual que PagoYa */
+.auth-logo {
+  display: inline-block;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+  text-decoration: none;
+}
+
+.auth-logo:hover {
+  text-decoration: none;
+}
+
+.auth-logo span {
+  color: var(--color-primary);
+}
+
+.panel-subtitle {
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.7;
+}
+
+/* Panel derecho — contenedor del formulario */
+.auth-panel-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl) var(--spacing-lg);
+  background: var(--color-bg);
+}
+
+.auth-form-wrapper {
+  width: 100%;
+  max-width: 400px;
+  background: var(--color-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 36px 32px;
+}
+
+@media (max-width: 900px) {
+  .auth-panel-left {
+    display: none;
+  }
+
+  .auth-panel-right {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-panel-right {
+    padding: var(--spacing-lg) var(--spacing);
+    align-items: flex-start;
+    padding-top: var(--spacing-xl);
+  }
+
+  .auth-form-wrapper {
+    max-width: 100%;
+    padding: 28px 22px;
+  }
+}

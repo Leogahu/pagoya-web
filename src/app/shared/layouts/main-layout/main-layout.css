@@ -1,0 +1,217 @@
+/* ── Contenedor raíz ── */
+.layout {
+  display: flex;
+  min-height: 100vh;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════
+   SIDEBAR (estilo PagoYa: oscuro)
+══════════════════════════ */
+.sidebar {
+  width: 240px;
+  min-width: 240px;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-tx);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease;
+}
+
+/* Marca: wordmark "Pago" + "Ya" (igual que PagoYa) */
+.sidebar-brand {
+  padding: 18px 20px 22px;
+  border-bottom: 1px solid #2c2e34;
+}
+
+.brand-name {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.5px;
+}
+
+.brand-name .brand-accent {
+  color: var(--color-primary);
+}
+
+/* Nav principal */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 12px;
+  gap: 2px;
+  flex: 1;
+}
+
+/* Sección inferior */
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  padding: 0 12px 20px;
+  gap: 2px;
+}
+
+/* Separador */
+.nav-separator {
+  height: 1px;
+  background: #2c2e34;
+  margin: 8px 4px;
+}
+
+/* Etiqueta de grupo */
+.nav-group-label {
+  font-size: 0.70rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--sidebar-mut);
+  padding: 4px 12px 2px;
+}
+
+/* Links y botón logout */
+.sidebar-nav a,
+.sidebar-bottom a,
+.nav-logout {
+  display: flex;
+  align-items: center;
+  padding: 9px 12px;
+  border-radius: var(--radius-sm);
+  color: var(--sidebar-tx);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+  cursor: pointer;
+}
+
+.nav-logout {
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.sidebar-nav a:hover,
+.sidebar-bottom a:hover,
+.nav-logout:hover {
+  background: #2c2e34;
+  color: #fff;
+  text-decoration: none;
+}
+
+.sidebar-nav a.active,
+.sidebar-bottom a.active {
+  background: var(--color-primary);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ══════════════════════════
+   ÁREA PRINCIPAL
+══════════════════════════ */
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.topbar {
+  min-height: 52px;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 var(--spacing-lg);
+}
+
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  color: var(--color-text);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+}
+
+/* Miga de pan (ruta actual) */
+.crumb {
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  margin-right: auto;
+}
+
+/* Usuario + avatar */
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text-2);
+  font-size: 0.9rem;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+  padding: var(--spacing-lg) var(--spacing);
+  background: var(--color-surface);
+}
+
+/* Pie de página de la app */
+.app-footer {
+  padding: 16px var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+/* ══════════════════════════
+   RESPONSIVE
+══════════════════════════ */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 200;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .menu-toggle {
+    display: flex;
+  }
+
+  .main-area {
+    width: 100%;
+  }
+}

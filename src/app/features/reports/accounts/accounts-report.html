@@ -1,0 +1,86 @@
+<div class="page-head with-action">
+  <div>
+    <h1 class="page-title">Reporte de cuentas</h1>
+    <p class="page-subtitle">Resumen de cuentas por tipo y estado.</p>
+  </div>
+  <div class="head-actions no-print">
+    <button mat-stroked-button (click)="exportCsv()">
+      <mat-icon>download</mat-icon> CSV
+    </button>
+    <button mat-stroked-button (click)="exportPdf()">
+      <mat-icon>picture_as_pdf</mat-icon> PDF
+    </button>
+  </div>
+</div>
+
+@if (loading()) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
+
+@if (errorMessage()) {
+  <div class="form-mensaje form-mensaje--error">{{ errorMessage() }}</div>
+}
+
+<div class="report-stats">
+  <mat-card appearance="outlined" class="report-stat">
+    <span class="stat-label">Total de cuentas</span>
+    <span class="stat-value">{{ totalAccounts() }}</span>
+  </mat-card>
+  <mat-card appearance="outlined" class="report-stat">
+    <span class="stat-label">Saldo acumulado</span>
+    <span class="stat-value">{{ totalBalance() | soles }}</span>
+  </mat-card>
+</div>
+
+<div class="report-grid">
+  <mat-card appearance="outlined" class="panel">
+    <div class="panel-head">
+      <h2 class="panel-title">
+        <mat-icon>donut_large</mat-icon>
+        Cuentas por {{ donutMode() === 'type' ? 'tipo' : 'estado' }}
+      </h2>
+      <mat-button-toggle-group
+        [value]="donutMode()"
+        (change)="donutMode.set($event.value)"
+        hideSingleSelectionIndicator
+        class="no-print donut-toggle"
+      >
+        <mat-button-toggle value="status">Estado</mat-button-toggle>
+        <mat-button-toggle value="type">Tipo</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    @if (statusDonut().length) {
+      <app-donut-chart [data]="statusDonut()" caption="Cuentas" />
+    } @else {
+      <p class="panel-empty">Sin datos para mostrar.</p>
+    }
+  </mat-card>
+
+  <mat-card appearance="outlined" class="panel">
+    <h2 class="panel-title"><mat-icon>bar_chart</mat-icon> Saldo por tipo</h2>
+    <app-bar-chart [data]="balanceByType()" />
+  </mat-card>
+</div>
+
+<mat-card appearance="outlined" class="table-card">
+  <table mat-table [dataSource]="rows()">
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>Tipo</th>
+      <td mat-cell *matCellDef="let r">{{ typeText(r) }}</td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let r">{{ statusText(r) }}</td>
+    </ng-container>
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef class="num">Cantidad</th>
+      <td mat-cell *matCellDef="let r" class="num">{{ r.total }}</td>
+    </ng-container>
+    <ng-container matColumnDef="totalBalance">
+      <th mat-header-cell *matHeaderCellDef class="num">Saldo</th>
+      <td mat-cell *matCellDef="let r" class="num">{{ r.totalBalance | soles }}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns"></tr>
+  </table>
+</mat-card>
